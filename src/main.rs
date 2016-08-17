@@ -1,8 +1,5 @@
 mod system;
 
-use system::system::{
-    get_cpus, get_cpu_speed, get_os_type, get_os_release, get_disk_info_free, get_disk_info_total, get_hostname
-};
 #[derive(Debug)]
 struct SystemInformation {
     num_cpus: usize,
@@ -17,13 +14,13 @@ struct SystemInformation {
 impl SystemInformation {
     fn new() -> SystemInformation {
         SystemInformation {
-            num_cpus: get_cpus(),
-            processor_speed: get_cpu_speed(),
-            os_type: get_os_type(),
-            os_release: get_os_release(),
-            disk_info_free: get_disk_info_free(),
-            disk_info_total: get_disk_info_total(),
-            hostname: get_hostname(),
+            num_cpus: system::system::get_cpus(),
+            processor_speed: system::system::get_cpu_speed(),
+            os_type: system::system::get_os_type(),
+            os_release: system::system::get_os_release(),
+            disk_info_free: system::system::get_disk_info_free(),
+            disk_info_total: system::system::get_disk_info_total(),
+            hostname: system::system::get_hostname(),
         }
     }
 }
