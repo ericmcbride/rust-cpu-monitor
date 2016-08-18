@@ -11,4 +11,12 @@ $ cargo run
 ### Docker Instructions:
     (Coming Soon)
 
+### How to Use CLI:
+As of right now there are no CLI Commands.  But in case you want to see the CLI
+in action:
+```sh
+$ cargo build
+$ ./target/debug/cpu_monitor -h
+```
+
 Want to contribute? Great! Look in the issues tab and claim an issue if you want to work on RUSTY-SHTOP.  Write tests, make sure all the previous tests pass and we are good to go.

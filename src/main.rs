@@ -1,5 +1,9 @@
 mod system;
 
+#[macro_use]
+extern crate clap;
+use clap::App;
+
 #[derive(Debug)]
 struct SystemInformation {
     num_cpus: usize,
@@ -27,6 +31,9 @@ impl SystemInformation {
 
 
 fn main() {
+    let yaml = load_yaml!("cli.yml");
+    let matches = App::from_yaml(yaml).get_matches();
     let system = SystemInformation::new();
     println!("system info is {:?}", system);
+
 }
