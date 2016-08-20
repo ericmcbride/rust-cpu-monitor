@@ -23,21 +23,44 @@ fn main() {
     println!("processes are {:?}", processes);
 }
 
-pub fn get_all_processes_darwin() {
+pub fn get_all_processes_darwin()  {
     // Management Information Base (the name, namelen)
     // Apple Explanation Below in iphone docs:
     // https://developer.apple.com/library/ios/documentation/System/Conceptual/ManPages_iPhoneOS/man3/sysctl.3.html
     // How HTOP Does it:
     // https://github.com/hishamhm/htop/blob/master/darwin/DarwinProcess.c
-    let mut mib: [libc::c_int; 2] = [libc::CTL_KERN, libc::KERN_MAXPROC];
-    let mut value: libc::c_int = 16;
-    let mut size = size_of_val(&value);
-    let pointer: *mut libc::c_void = &mut value as *mut _ as *mut libc::c_void;
-
+    let mut mib = vec![
+        libc::CTL_KERN as libc::c_int, 
+        libc::KERN_MAXPROC as libc::c_int,
+        libc::KERN_PROC_ALL as libc::c_int,
+        0 as libc::c_int
+    ];
+    let mut size: libc::size_t = 0;
+    
+    // TODO: FIGURE OUT THIS CALL
+    // SYSCTL ARGUMENTS:
+    // FIRST ARG:
+    //      NAME: Points to an array of integers.  Each of the integer values identifies a sysctl
+    //      item either a dir or a node file.
+    // SECOND ARG:
+    //      NLEN: States how many intger numbers are listen in the array name: to reach a
+    //      particular entry you need to specify the path through the subdirectories so you need to
+    //      tell how long is such path
+    // THIRD ARG:
+    //      OLDVAL: Is a pointer to a data buffer where the old value of the sysctl item must be
+    //      stored. If NULL, the system wont return values to the user space
+    // FOURTH ARG:
+    //      NEWVAL: Points to a data buffer hosting replacement dataa.  The kernel will read this
+    //      buffer to change the sysctl entry being acted upon.  If null the kernel value is not
+    //      changed
+    // FIFTH ARG:
+    //      NEWLEN: The length of the newval
+    // REFERENCE: http://www.linux.it/~rubini/docs/sysctl/
     unsafe {
-        let result = libc::sysctl(mib.as_mut_ptr() as *mut libc::c_int, mib.len() as libc::c_uint, pointer, &mut size as *mut usize, ptr::null_mut(), 0);
+        println!("WTF {}", libc::sysctl(mib.as_mut_ptr(), mib.len() as libc::c_uint, ptr::null_mut(), &mut size, ptr::null_mut(), 0 as libc::size_t))
     }
 }
+
 
 pub fn get_pid() -> PID {
     unsafe { libc::getpid() }
