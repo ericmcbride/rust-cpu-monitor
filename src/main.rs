@@ -27,6 +27,8 @@ pub fn get_all_processes_darwin() {
     // Management Information Base (the name, namelen)
     // Apple Explanation Below in iphone docs:
     // https://developer.apple.com/library/ios/documentation/System/Conceptual/ManPages_iPhoneOS/man3/sysctl.3.html
+    // How HTOP Does it:
+    // https://github.com/hishamhm/htop/blob/master/darwin/DarwinProcess.c
     let mut mib: [libc::c_int; 2] = [libc::CTL_KERN, libc::KERN_MAXPROC];
     let mut value: libc::c_int = 16;
     let mut size = size_of_val(&value);
