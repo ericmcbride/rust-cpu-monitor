@@ -9,7 +9,7 @@ use clap::App;
 
 use std::ptr;
 use std::mem::size_of_val;
-use std::io::Error;
+use std::io;
 
 pub type PID = libc::pid_t;
 
@@ -23,7 +23,7 @@ fn main() {
     println!("processes are {:?}", processes);
 }
 
-pub fn get_all_processes_darwin()  {
+pub fn get_all_processes_darwin() {
     // Management Information Base (the name, namelen)
     // Apple Explanation Below in iphone docs:
     // https://developer.apple.com/library/ios/documentation/System/Conceptual/ManPages_iPhoneOS/man3/sysctl.3.html
@@ -57,7 +57,14 @@ pub fn get_all_processes_darwin()  {
     //      NEWLEN: The length of the newval
     // REFERENCE: http://www.linux.it/~rubini/docs/sysctl/
     unsafe {
-        println!("WTF {}", libc::sysctl(mib.as_mut_ptr(), mib.len() as libc::c_uint, ptr::null_mut(), &mut size, ptr::null_mut(), 0 as libc::size_t))
+        let mut err = libc::sysctl(mib.as_mut_ptr(), mib.len() as libc::c_uint, ptr::null_mut(), &mut size, ptr::null_mut(), 0 as libc::size_t);
+        
+        if err !=0 {
+            // ERR 21 is a Not a Directory error wtf
+            println!("Err: {}", io::Error::last_os_error());
+        } else {
+            println!("Matches");
+        }
     }
 }
 
