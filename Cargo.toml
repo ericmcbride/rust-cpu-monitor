@@ -4,7 +4,8 @@ version = "0.1.0"
 authors = ["ericmbride <eric.mcbride@rewardstyle.com>"]
 
 [dependencies]
-num_cpus="1.0.0"
-sys-info="0.4.1"
-clap={ features = ["yaml"] }
-
+num_cpus ="1.0.0"
+sys-info ="0.4.1"
+clap = { features = ["yaml"] }
+libc = "0.2.0"
+psutil = "1.0.0"
